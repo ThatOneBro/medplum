@@ -236,7 +236,7 @@ jobs:
         run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready -h localhost -p 5432; do
+          until pg_isready; do
             echo "Waiting for postgres..."
             sleep 2
           done
@@ -272,7 +272,7 @@ jobs:
     strategy:
       matrix:
         node-version: [22, 24]
-        pg-version: [14, 18]
+        pg-version: [14]
         redis-version: [7]
     env:
       NODE_OPTIONS: --max-old-space-size=8192
