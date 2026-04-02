@@ -5,6 +5,14 @@ concurrency:
   group: ci-build-${{ github.ref_name == 'main' && github.sha || github.ref }}
   cancel-in-progress: true
 on:
+  workflow_dispatch:
+    inputs:
+      force_build:
+        description: 'Force turbo build (bypass cache)'
+        required: false
+        type: boolean
+        default: false
+
   push:
     branches: [main]
   pull_request:
@@ -153,7 +161,7 @@ jobs:
 
   test:
     name: Run tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 45
     needs: [build]
     strategy:
@@ -223,6 +231,9 @@ jobs:
           echo "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}" >> $GITHUB_ENV
           echo "TURBO_TEAM=${{ secrets.TURBO_TEAM }}" >> $GITHUB_ENV
           echo "TURBO_CACHE=remote:rw" >> $GITHUB_ENV
+      - name: Force Turbo Build
+        if: ${{ github.event.inputs.force_build == 'true' }}
+        run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Wait for PostgreSQL
         run: |
           until pg_isready -h localhost -p 5432; do
@@ -325,6 +336,9 @@ jobs:
           echo "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}" >> $GITHUB_ENV
           echo "TURBO_TEAM=${{ secrets.TURBO_TEAM }}" >> $GITHUB_ENV
           echo "TURBO_CACHE=remote:rw" >> $GITHUB_ENV
+      - name: Force Turbo Build
+        if: ${{ github.event.inputs.force_build == 'true' }}
+        run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Wait for PostgreSQL
         run: |
           until pg_isready -h localhost -p 5432; do
