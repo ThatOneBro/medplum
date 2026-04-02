@@ -66,9 +66,6 @@ jobs:
           echo "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}" >> $GITHUB_ENV
           echo "TURBO_TEAM=${{ secrets.TURBO_TEAM }}" >> $GITHUB_ENV
           echo "TURBO_CACHE=remote:rw" >> $GITHUB_ENV
-      - name: Force Turbo Build
-        if: ${{ github.event.inputs.force_build == 'true' }}
-        run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Log npm stats
         run: |
           echo "node version: $(node --version)"
@@ -126,9 +123,6 @@ jobs:
           echo "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}" >> $GITHUB_ENV
           echo "TURBO_TEAM=${{ secrets.TURBO_TEAM }}" >> $GITHUB_ENV
           echo "TURBO_CACHE=remote:rw" >> $GITHUB_ENV
-      - name: Force Turbo Build
-        if: ${{ github.event.inputs.force_build == 'true' }}
-        run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - id: build
         name: Build
         run: npm run build
@@ -442,9 +436,6 @@ jobs:
           echo "TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}" >> $GITHUB_ENV
           echo "TURBO_TEAM=${{ secrets.TURBO_TEAM }}" >> $GITHUB_ENV
           echo "TURBO_CACHE=remote:rw" >> $GITHUB_ENV
-      - name: Force Turbo Build
-        if: ${{ github.event.inputs.force_build == 'true' }}
-        run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Build Project
         run: ./scripts/build-docs.sh
         env:
