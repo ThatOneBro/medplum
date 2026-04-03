@@ -236,7 +236,7 @@ jobs:
         run: echo "TURBO_FORCE=true" >> $GITHUB_ENV
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready; do
+          until pg_isready -h localhost -p 5432; do
             echo "Waiting for postgres..."
             sleep 2
           done
